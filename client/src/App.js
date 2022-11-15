@@ -8,6 +8,11 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { withStyles } from "@mui/styles";
+import { CircularProgress } from "@mui/material";
+// import { ThemeProvider, ThemeContext } from "@emotion/react";
+// import { createTheme } from "@mui/system";
+
+// let theme = {};
 
 const styles = {
   root: {
@@ -18,14 +23,20 @@ const styles = {
   table: {
     minWidth: 1080,
   },
+  progress: {
+    // margin: theme.spacing.unit * 2,
+  },
 };
 
 class App extends Component {
   state = {
-    customers: null,
+    customers: "",
+    completed: 0,
   };
 
   componentDidMount() {
+    // 0.02초 마다 progress 함수 실행
+    this.timer = setInterval(this.progress, 20);
     this.callApi()
       .then((res) => this.setState({ customers: res }))
       .catch((err) => console.log(err));
@@ -37,9 +48,15 @@ class App extends Component {
     return body;
   };
 
+  progress = () => {
+    const { completed } = this.state;
+    this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
+  };
+
   render() {
     const { classes } = this.props;
     return (
+      // <ThemeProvider theme={theme}>
       <Paper className={classes.root}>
         <Table className={classes.table}>
           <TableHead>
@@ -53,14 +70,21 @@ class App extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.customers
-              ? this.state.customers.map((c) => {
-                  return (<Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />);
-                })
-              : ""}
+            {this.state.customers ? (
+              this.state.customers.map((c) => {
+                return <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />;
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan="6" alige="center">
+                  <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed} />
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </Paper>
+      // </ThemeProvider>
     );
   }
 }
