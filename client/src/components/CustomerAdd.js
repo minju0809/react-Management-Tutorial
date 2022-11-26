@@ -10,7 +10,7 @@ class CustomerAdd extends React.Component {
       birthday: "",
       gender: "",
       job: "",
-      fileName: "",
+      fileName: ""
     };
   }
 
@@ -18,12 +18,25 @@ class CustomerAdd extends React.Component {
     e.preventDefault();
     this.addCustomer().then((response) => {
       console.log(response.data);
+      this.props.stateRefresh();
     });
+    // 고객 추가 데이터 전송 후 값을 초기화하는 작업
+    this.setState({
+      file: null,
+      userName: "",
+      birthday: "",
+      gender: "",
+      job: "",
+      fileName: ""
+    });
+    // window.location.reload();
+
   };
 
   handleFileChange = (e) => {
+    console.log(e);
     this.setState({
-      file: e.target.file[0],
+      file: e.target.files[0],
       fileName: e.target.value,
     });
   };
@@ -48,6 +61,11 @@ class CustomerAdd extends React.Component {
         "content-type": "multipart/form-data",
       },
     };
+    // console.log(this.state.file);
+    // console.log(this.state.userName);
+    // console.log(this.state.birthday);
+    // console.log(this.state.gender);
+    // console.log(this.state.job);
     return axios.post(url, formData, config);
   };
 

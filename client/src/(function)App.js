@@ -1,6 +1,7 @@
 import "./App.css";
-import React, { Component } from "react";
+import { useState, useEffect } from "react";
 import Customer from "./components/(class)Customer";
+import CustomerAdd from "./components/CustomerAdd";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -9,8 +10,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { withStyles } from "@mui/styles";
 import { CircularProgress } from "@mui/material";
-// import { ThemeProvider, ThemeContext } from "@emotion/react";
-// import { createTheme } from "@mui/system";
 
 const styles = {
   root: {
@@ -21,40 +20,46 @@ const styles = {
   table: {
     // minWidth: 1080,
   },
-  // progress: {
-  //   // margin: theme.spacing.unit * 2,
-  // },
 };
 
-class App extends Component {
-  state = {
-    customers: "",
-    // completed: 0,
-  };
+function App(props) {
+  const [state, setState] = useState("");
 
-  componentDidMount() {
-    // 0.02초 마다 progress 함수 실행
-    // this.timer = setInterval(this.progress, 20);
-    this.callApi()
-      .then((res) => this.setState({ customers: res }))
-      .catch((err) => console.log(err));
-  }
+  // 14강
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     customer: "",
+  //     completed: 0,
+  //   };
+  // }
 
-  // progress = () => {
-  //   const { completed } = this.state;
-  //   this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
+  // stateRefresh = () => {
+  //   setState({
+  //     customers: "",
+  //     completed: 0,
+  //   });
+  //   callApi()
+  //     .then((res) => this.setState({ customers: res }))
+  //     .catch((err) => console.log(err));
   // };
 
-  callApi = async () => {
+  const callApi = async () => {
     const response = await fetch("/api/customers");
+    // console.log(response);
     const body = await response.json();
     return body;
   };
 
-  render() {
-    const { classes } = this.props;
-    return (
-      // <ThemeProvider theme={theme}>
+  useEffect(() => {
+    callApi()
+      .then((res) => setState({ customers: res }))
+      .catch((err) => console.log(err));
+  }, []);
+
+  const { classes } = props;
+  return (
+    <div>
       <Paper className={classes.root}>
         <Table className={classes.table}>
           <TableHead>
@@ -68,8 +73,8 @@ class App extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.customers ? (
-              this.state.customers.map((c) => {
+            {state.customers ? (
+              state.customers.map((c) => {
                 return <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />;
               })
             ) : (
@@ -82,9 +87,9 @@ class App extends Component {
           </TableBody>
         </Table>
       </Paper>
-      // </ThemeProvider>
-    );
-  }
+      <CustomerAdd stateRefresh={stateRefresh} />
+    </div>
+  );
 }
 
 export default withStyles(styles)(App);
