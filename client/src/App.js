@@ -26,11 +26,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      customer: "",
+      customers: "",
       completed: 0,
     };
   }
 
+  // state 초기화, 고객데이터 불러오기
   stateRefresh = () => {
     this.setState({
       customers: "",

@@ -25,24 +25,24 @@ const styles = {
 function App(props) {
   const [state, setState] = useState("");
 
-  // 14강
+  // 14강 생성자
   // constructor(props) {
   //   super(props);
   //   this.state = {
-  //     customer: "",
+  //     customers: "",
   //     completed: 0,
   //   };
   // }
 
-  // stateRefresh = () => {
-  //   setState({
-  //     customers: "",
-  //     completed: 0,
-  //   });
-  //   callApi()
-  //     .then((res) => this.setState({ customers: res }))
-  //     .catch((err) => console.log(err));
-  // };
+  stateRefresh = () => {
+    setState({
+      customers: "",
+      completed: 0,
+    });
+    callApi()
+      .then((res) => this.setState({ customers: res }))
+      .catch((err) => console.log(err));
+  };
 
   const callApi = async () => {
     const response = await fetch("/api/customers");

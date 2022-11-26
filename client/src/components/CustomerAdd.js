@@ -30,7 +30,6 @@ class CustomerAdd extends React.Component {
       fileName: ""
     });
     // window.location.reload();
-
   };
 
   handleFileChange = (e) => {
