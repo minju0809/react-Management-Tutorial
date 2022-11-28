@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { Component } from "react";
-import Customer from "./components/(class)Customer";
+import Customer from "./components/Customer";
 import CustomerAdd from "./components/CustomerAdd";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -38,8 +38,8 @@ class App extends Component {
       completed: 0,
     });
     this.callApi()
-    .then((res) => this.setState({ customers: res }))
-    .catch((err) => console.log(err));
+      .then((res) => this.setState({ customers: res }))
+      .catch((err) => console.log(err));
   };
 
   componentDidMount() {
@@ -71,12 +71,13 @@ class App extends Component {
                 <TableCell>생년월일</TableCell>
                 <TableCell>성별</TableCell>
                 <TableCell>직업</TableCell>
+                <TableCell>설정</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {this.state.customers ? (
                 this.state.customers.map((c) => {
-                  return <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />;
+                  return <Customer stateRefresh={this.stateRefresh} key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />;
                 })
               ) : (
                 <TableRow>
@@ -88,7 +89,7 @@ class App extends Component {
             </TableBody>
           </Table>
         </Paper>
-        <CustomerAdd stateRefresh={this.stateRefresh}/>
+        <CustomerAdd stateRefresh={this.stateRefresh} />
       </div>
       // </ThemeProvider>
     );
