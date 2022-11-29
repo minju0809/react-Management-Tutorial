@@ -59,7 +59,9 @@ app.post("/api/customers", upload.single("image"), (req, res) => {
 });
 
 app.delete("/api/customers/:id", (req, res) => {
+  // 특정 id의 값을 가지는 데이터에서 isDeleted 속성을 1로 바꿔준다 > 삭제 완료 되었다
   let sql = "update customer set isDeleted = 1 where id = ?";
+  // 데이터 전달
   let params = [req.params.id];
   connection.query(sql, params, (err, rows, fields) => {
     res.send(rows);
