@@ -37,9 +37,9 @@ const styles = {
     marginLeft: 16,
     marginRight: 16,
   },
-  tableHead: {
-    fontSize: "1.0rem !important", // 적용 안됨
-  },
+  // tableHead: {
+  //   fontSize: "1.0rem", // mui의 style 때문에 적용 안됨 >> inline-css로 대체
+  // },
 };
 
 const Search = styled("div")(({ theme }) => ({
@@ -152,7 +152,14 @@ class App extends Component {
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
-                <StyledInputBase placeholder="검색하기" inputProps={{ "aria-label": "search" }} name="searchKeyword" value={this.state.searchKeyword} onChange={this.handleValueChange} />
+                <StyledInputBase
+                  placeholder="검색하기"
+                  inputProps={{ "aria-label": "search" }}
+                  // 입력된 문자열을 searchKeyword로 관리
+                  name="searchKeyword"
+                  value={this.state.searchKeyword}
+                  onChange={this.handleValueChange}
+                />
               </Search>
             </Toolbar>
           </AppBar>
@@ -165,7 +172,7 @@ class App extends Component {
                 <TableRow>
                   {cellList.map((c, idx) => {
                     return (
-                      <TableCell key={idx} className={classes.tableHead}>
+                      <TableCell style={{ fontSize: "1rem" }} key={idx} className={classes.tableHead}>
                         {c}
                       </TableCell>
                     );
